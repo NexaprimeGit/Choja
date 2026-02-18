@@ -54,6 +54,10 @@ export default function PostAdForm() {
   const [selectedDates, setSelectedDates] = useState([]);
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
+  // Media upload state
+  const [uploadedImages, setUploadedImages] = useState([]);
+
+  // Scroll categories
   const scroll = (direction) => {
     if (!scrollRef.current) return;
     const scrollAmount = 260;
@@ -61,6 +65,21 @@ export default function PostAdForm() {
       left: direction === "left" ? -scrollAmount : scrollAmount,
       behavior: "smooth",
     });
+  };
+
+  // Handle media upload
+  const handleFileUpload = (e) => {
+    const files = Array.from(e.target.files);
+    const images = files.map((file) => ({
+      file,
+      url: URL.createObjectURL(file),
+    }));
+    setUploadedImages((prev) => [...prev, ...images]);
+  };
+
+  // Remove uploaded image
+  const removeImage = (index) => {
+    setUploadedImages((prev) => prev.filter((_, i) => i !== index));
   };
 
   // Format date to readable string
@@ -71,13 +90,11 @@ export default function PostAdForm() {
       year: "numeric",
     }).format(date);
 
-  // Get month names
+  // Month & Year arrays
   const months = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
   ];
-
-  // Generate year options
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 10 }, (_, i) => currentYear + i);
 
@@ -88,7 +105,6 @@ export default function PostAdForm() {
       <div className="bg-white pt-8 pb-6 px-5 rounded-2xl shadow-md border border-gray-200 relative">
         <h3 className="font-semibold text-xl mb-4 text-gray-800">Choose Category</h3>
 
-        {/* Scroll Buttons */}
         <button
           onClick={() => scroll("left")}
           className="absolute left-0 top-1/2 -translate-y-1/2 bg-white border border-gray-200 shadow-md rounded-full p-2 hover:bg-gray-50 transition z-10"
@@ -102,7 +118,6 @@ export default function PostAdForm() {
           <ChevronRight size={16} />
         </button>
 
-        {/* Horizontal Scroll Area */}
         <div
           ref={scrollRef}
           className="flex gap-5 overflow-x-auto scroll-smooth px-10 snap-x snap-mandatory"
@@ -119,8 +134,7 @@ export default function PostAdForm() {
                   setSelectedSub(null);
                 }}
                 className={`snap-start flex-shrink-0 w-[100px] h-[120px] flex flex-col items-center justify-center rounded-xl cursor-pointer transition-all duration-300 border
-                  ${
-                    isActive
+                  ${isActive
                       ? "bg-blue-600 text-white border-blue-600 shadow-lg"
                       : "bg-white text-gray-700 border-gray-300 hover:border-blue-500 hover:shadow-md hover:-translate-y-1"
                   }`}
@@ -132,7 +146,6 @@ export default function PostAdForm() {
           })}
         </div>
 
-        {/* Subcategory Options */}
         {selectedCategory?.sub && (
           <div className="flex gap-4 mt-6 justify-center">
             {selectedCategory.sub.map((option, i) => (
@@ -140,11 +153,10 @@ export default function PostAdForm() {
                 key={i}
                 onClick={() => setSelectedSub(option)}
                 className={`px-6 py-2 rounded-full text-sm font-medium transition
-                ${
-                  selectedSub === option
-                    ? "bg-blue-600 text-white shadow-md"
-                    : "bg-gray-100 hover:bg-blue-50 text-gray-700"
-                }`}
+                  ${selectedSub === option
+                      ? "bg-blue-600 text-white shadow-md"
+                      : "bg-gray-100 hover:bg-blue-50 text-gray-700"
+                  }`}
               >
                 {option}
               </button>
@@ -176,7 +188,6 @@ export default function PostAdForm() {
       <div className="bg-white p-8 rounded-2xl shadow-md border border-gray-200 space-y-6">
         <h3 className="font-semibold text-xl text-gray-800">Ad Scheduling</h3>
 
-        {/* Month & Year Dropdowns */}
         <div className="flex gap-4 mb-4 justify-center">
           <select
             className="border border-gray-300 rounded-lg px-3 py-1"
@@ -217,7 +228,6 @@ export default function PostAdForm() {
           </div>
         </div>
 
-        {/* Selected Dates Label */}
         {selectedDates.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-4 justify-center">
             {selectedDates.map((date, index) => (
@@ -232,47 +242,43 @@ export default function PostAdForm() {
         )}
       </div>
 
-     {/* Media Upload */}
-<div className="bg-white p-8 rounded-2xl shadow-md border border-gray-200">
-  <h3 className="font-semibold text-xl mb-6 text-gray-800">Media & Photos</h3>
+      {/* Media Upload */}
+      <div className="bg-white p-8 rounded-2xl shadow-md border border-gray-200">
+        <h3 className="font-semibold text-xl mb-6 text-gray-800">Media & Photos</h3>
 
-  <div className="grid grid-cols-4 gap-6">
-    {/* Display uploaded images */}
-    {uploadedImages.map((image, index) => (
-      <div
-        key={index}
-        className="h-28 w-full border-2 border-gray-200 rounded-2xl flex items-center justify-center relative overflow-hidden"
-      >
-        <img
-          src={image.url}
-          alt={`uploaded-${index}`}
-          className="h-full w-full object-cover rounded-2xl"
-        />
-        {/* Remove button */}
-        <button
-          type="button"
-          onClick={() => removeImage(index)}
-          className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
-        >
-          &times;
-        </button>
+        <div className="grid grid-cols-4 gap-6">
+          {uploadedImages.map((image, index) => (
+            <div
+              key={index}
+              className="h-28 w-full border-2 border-gray-200 rounded-2xl flex items-center justify-center relative overflow-hidden"
+            >
+              <img
+                src={image.url}
+                alt={`uploaded-${index}`}
+                className="h-full w-full object-cover rounded-2xl"
+              />
+              <button
+                type="button"
+                onClick={() => removeImage(index)}
+                className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+              >
+                &times;
+              </button>
+            </div>
+          ))}
+
+          <label className="h-28 flex items-center justify-center border-2 border-dashed rounded-2xl cursor-pointer text-gray-400 hover:border-blue-500 hover:text-blue-500 transition">
+            +
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              className="hidden"
+              onChange={handleFileUpload}
+            />
+          </label>
+        </div>
       </div>
-    ))}
-
-    {/* Upload button */}
-    <label className="h-28 flex items-center justify-center border-2 border-dashed rounded-2xl cursor-pointer text-gray-400 hover:border-blue-500 hover:text-blue-500 transition">
-      +
-      <input
-        type="file"
-        multiple
-        accept="image/*"
-        className="hidden"
-        onChange={(e) => handleFileUpload(e)}
-      />
-    </label>
-  </div>
-</div>
-
     </div>
   );
 }
