@@ -9,29 +9,26 @@ const places = [
 
 export default function PopularPlaces() {
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 theme-section">
       <div className="max-w-7xl mx-auto px-6">
 
-        {/* SECTION HEADER */}
         <div className="flex justify-between items-center mb-10">
-          <h2 className="text-2xl font-semibold text-gray-800">
+          <h2 className="text-2xl font-semibold theme-heading">
             Explore Popular Places
           </h2>
 
-          <button className="text-blue-600 font-medium text-sm hover:underline transition">
+          <button className="theme-button-primary px-4 py-2 rounded-full text-sm">
             View More →
           </button>
         </div>
 
-        {/* GRID */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
           {places.map((place, i) => (
             <div
               key={i}
-              className="group bg-gray-50 rounded-xl shadow-md p-4 border border-transparent hover:border-blue-500 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
+              className="group rounded-xl shadow-md p-4 transition-all duration-300 theme-card"
             >
-              {/* IMAGE */}
               <div className="overflow-hidden rounded-lg">
                 <Image
                   src={`/images/${place.img}`}
@@ -42,21 +39,21 @@ export default function PopularPlaces() {
                 />
               </div>
 
-              {/* CONTENT */}
-              <h3 className="mt-4 font-semibold text-gray-800 group-hover:text-blue-600 transition">
+              <h3 className="mt-4 font-semibold theme-heading">
                 {place.name}
               </h3>
 
-              <p className="text-gray-500 text-sm mt-1">
+              <p
+                className="text-sm mt-1"
+                style={{ color: "var(--color-text-muted)" }}
+              >
                 A historic and beautiful place to visit.
               </p>
             </div>
           ))}
 
         </div>
-
       </div>
     </section>
   );
 }
-

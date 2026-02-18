@@ -1,7 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Utensils, Briefcase, ShoppingBag, Tag, Home, Wrench } from "lucide-react";
+import {
+  Utensils,
+  Briefcase,
+  ShoppingBag,
+  Tag,
+  Home,
+  Wrench,
+} from "lucide-react";
 
 const items = [
   { name: "Restaurants", icon: Utensils },
@@ -22,21 +29,19 @@ export default function Discover() {
   const [activeIndex, setActiveIndex] = useState(null);
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-blue-50">
+    <section className="py-20 theme-section">
       <div className="max-w-7xl mx-auto px-6">
 
-        {/* Section Header */}
         <div className="flex items-center justify-between mb-14">
-          <h2 className="text-3xl font-bold text-gray-800">
+          <h2 className="text-3xl font-bold theme-heading">
             Discover What's Nearby
           </h2>
 
-          <button className="text-blue-600 font-medium text-sm hover:text-blue-700 transition">
+          <button className="font-medium text-sm theme-button-primary px-4 py-2 rounded-full">
             View More →
           </button>
         </div>
 
-        {/* Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8">
           {items.map((item, i) => {
             const Icon = item.icon;
@@ -46,25 +51,17 @@ export default function Discover() {
               <div
                 key={i}
                 onClick={() => setActiveIndex(i)}
-                className={`cursor-pointer rounded-2xl p-8 text-center border transition-all duration-300
-                ${
-                  isActive
-                    ? "border-blue-500 shadow-lg bg-blue-50"
-                    : "border-gray-200 bg-white hover:border-blue-400 hover:shadow-lg hover:-translate-y-2"
+                className={`cursor-pointer rounded-2xl p-8 text-center ${
+                  isActive ? "theme-card-active" : "theme-card"
                 }`}
               >
-                <div
-                  className={`w-14 h-14 mx-auto mb-4 flex items-center justify-center rounded-full transition-all duration-300
-                  ${
-                    isActive
-                      ? "bg-blue-100 text-blue-600"
-                      : "bg-blue-50 text-blue-600"
-                  }`}
-                >
+                <div className="w-14 h-14 mx-auto mb-4 flex items-center justify-center rounded-full theme-icon">
                   <Icon size={24} />
                 </div>
 
-                <h3 className="font-medium text-sm">{item.name}</h3>
+                <h3 className="font-medium text-sm theme-heading">
+                  {item.name}
+                </h3>
               </div>
             );
           })}

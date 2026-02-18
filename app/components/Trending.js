@@ -17,21 +17,19 @@ export default function Trending({ setSearchQuery }) {
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-gray-50">
+    <section className="py-20 theme-section">
       <div className="max-w-7xl mx-auto px-6">
 
-        {/* Header */}
         <div className="flex items-center justify-between mb-12">
-          <h2 className="text-3xl font-bold text-gray-800">
+          <h2 className="text-3xl font-bold theme-heading">
             Trending Searches Near You
           </h2>
 
-          <button className="text-blue-600 font-medium text-sm hover:text-blue-700 transition">
+          <button className="theme-button-primary px-4 py-2 rounded-full text-sm">
             View More →
           </button>
         </div>
 
-        {/* Tags */}
         <div className="flex flex-wrap gap-5">
           {tags.map((tag, i) => {
             const isActive = activeIndex === i;
@@ -41,13 +39,10 @@ export default function Trending({ setSearchQuery }) {
                 key={i}
                 onClick={() => {
                   setActiveIndex(i);
-                  setSearchQuery(tag); // 🔥 Updates Navbar input
+                  setSearchQuery(tag);
                 }}
-                className={`px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 border
-                ${
-                  isActive
-                    ? "bg-blue-600 text-white border-blue-600 shadow-md"
-                    : "bg-white text-gray-700 border-gray-200 hover:bg-blue-50 hover:border-blue-400 hover:shadow-md"
+                className={`px-6 py-3 rounded-full text-sm font-medium border transition-all duration-300 ${
+                  isActive ? "theme-button-primary" : "theme-card"
                 }`}
               >
                 {tag}

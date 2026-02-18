@@ -1,6 +1,276 @@
+@import "./styles/theme.css";
+
 @import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 body {
   background: #f3f4f6;
   font-family: Inter, sans-serif;
+}
+/* ============================= */
+/* THEME VARIABLES (EDIT ONLY THIS TO CHANGE THEME) */
+/* ============================= */
+
+:root {
+  --color-bg: #f9fafb;
+  --color-surface: #ffffff;
+  --color-primary: #2563eb;
+  --color-primary-light: #eff6ff;
+  --color-primary-hover: #1d4ed8;
+  --color-text: #1f2937;
+  --color-text-muted: #6b7280;
+  --color-border: #e5e7eb;
+  --color-accent: #f97316;
+  --color-accent-hover: #ea580c;
+}
+
+/* ============================= */
+/* REUSABLE THEME CLASSES */
+/* ============================= */
+
+.theme-section {
+  background: var(--color-bg);
+}
+
+.theme-heading {
+  color: var(--color-text);
+}
+
+.theme-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  transition: all 0.3s ease;
+}
+
+.theme-card:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-6px);
+  box-shadow: 0 15px 25px rgba(0,0,0,0.08);
+}
+
+.theme-card-active {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+  box-shadow: 0 15px 25px rgba(0,0,0,0.08);
+}
+
+.theme-icon {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.theme-button-primary {
+  background: var(--color-primary);
+  color: white;
+  transition: 0.3s;
+}
+
+.theme-button-primary:hover {
+  background: var(--color-primary-hover);
+}
+
+.theme-button-accent {
+  background: var(--color-accent);
+  color: white;
+  transition: 0.3s;
+}
+
+.theme-button-accent:hover {
+  background: var(--color-accent-hover);
+}
+.theme-footer {
+  background: var(--color-primary);
+  color: white;
+}
+
+.theme-footer-muted {
+  opacity: 0.85;
+}
+.theme-hero-card {
+  background: var(--color-primary-light);
+  border: 1px solid var(--color-border);
+}
+
+.theme-glow {
+  background: var(--color-primary);
+  opacity: 0.15;
+}
+.theme-overlay {
+  background: linear-gradient(
+    to right,
+    rgba(255,255,255,0.9),
+    rgba(255,255,255,0.5),
+    transparent
+  );
+}
+
+.theme-accent-text {
+  color: var(--color-accent);
+}
+/* ===== PAGE BACKGROUND ===== */
+.myads-wrapper {
+  background: #f4f6f9;
+  padding: 40px 80px 60px;
+  min-height: 100vh;
+}
+
+/* ===== BREADCRUMB ===== */
+.breadcrumb {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 25px;
+}
+
+.breadcrumb .arrow {
+  margin: 0 8px;
+}
+
+/* ===== HEADER ===== */
+.myads-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+}
+
+.myads-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.want-button {
+  background: #3b82f6;
+  color: white;
+  padding: 10px 24px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.want-button:hover {
+  background: #2563eb;
+}
+
+/* ===== GRID ===== */
+.ads-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+/* ===== CARD ===== */
+.ad-card {
+  background: white;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  transition: 0.2s ease;
+}
+
+.ad-card:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+/* IMAGE */
+.ad-image-wrapper {
+  width: 100%;
+  height: 210px;
+  overflow: hidden;
+}
+
+.ad-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* BODY */
+.ad-body {
+  padding: 18px;
+}
+
+.ad-status {
+  display: inline-block;
+  background: #e5e7eb;
+  color: #374151;
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
+/* TITLE */
+.ad-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 8px 0;
+  color: #111827;
+}
+
+/* PRICE */
+.ad-price {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+/* DATE */
+.ad-date {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 15px;
+}
+
+/* BUTTONS */
+.ad-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-btn {
+  border: 1px solid #d1d5db;
+  background: white;
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.delete-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* ===== PAGINATION ===== */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+  gap: 8px;
+}
+
+.page-btn,
+.page-number {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  background: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.page-number.active {
+  background: #3b82f6;
+  color: white;
+  border: none;
 }

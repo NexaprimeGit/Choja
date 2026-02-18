@@ -14,21 +14,21 @@ export default function FeaturedDeals() {
   const [activeIndex, setActiveIndex] = useState(null);
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-gray-100">
+    <section className="py-20 theme-section">
       <div className="max-w-7xl mx-auto px-6">
 
-        {/* Section Header */}
+        {/* Header */}
         <div className="flex items-center justify-between mb-12">
-          <h2 className="text-3xl font-bold text-gray-800">
+          <h2 className="text-3xl font-bold theme-heading">
             Featured Deals
           </h2>
 
-          <button className="text-orange-500 font-medium text-sm hover:text-orange-600 transition">
+          <button className="theme-button-primary px-4 py-2 rounded-full text-sm">
             View More →
           </button>
         </div>
 
-        {/* Deals Grid */}
+        {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {deals.map((deal, i) => {
             const isActive = activeIndex === i;
@@ -37,14 +37,10 @@ export default function FeaturedDeals() {
               <div
                 key={i}
                 onClick={() => setActiveIndex(i)}
-                className={`group cursor-pointer rounded-2xl overflow-hidden border transition-all duration-300
-                ${
-                  isActive
-                    ? "border-orange-500 shadow-xl bg-orange-50"
-                    : "border-gray-200 bg-white hover:shadow-xl hover:-translate-y-2 hover:border-orange-400"
+                className={`group cursor-pointer rounded-2xl overflow-hidden transition-all duration-300 ${
+                  isActive ? "theme-card-active" : "theme-card"
                 }`}
               >
-                {/* Image */}
                 <div className="overflow-hidden">
                   <Image
                     src={`/images/${deal.img}`}
@@ -55,24 +51,19 @@ export default function FeaturedDeals() {
                   />
                 </div>
 
-                {/* Content */}
                 <div className="p-6">
-                  <h3 className="font-semibold text-gray-800 text-lg">
+                  <h3 className="font-semibold text-lg theme-heading">
                     {deal.title}
                   </h3>
 
-                  <p className="text-orange-500 text-sm font-medium mt-1">
+                  <p
+                    className="text-sm font-medium mt-1"
+                    style={{ color: "var(--color-accent)" }}
+                  >
                     {deal.discount}
                   </p>
 
-                  <button
-                    className={`mt-5 w-full py-2.5 rounded-full font-medium transition-all duration-300
-                    ${
-                      isActive
-                        ? "bg-orange-600 text-white"
-                        : "bg-orange-500 text-white hover:bg-orange-600 active:scale-95"
-                    }`}
-                  >
+                  <button className="mt-5 w-full py-2.5 rounded-full theme-button-accent">
                     View Deal
                   </button>
                 </div>

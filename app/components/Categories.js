@@ -2,20 +2,20 @@
 
 import { useState } from "react";
 import {
-  BookOpen,       // Education
-  Users,          // Matrimonial, Pets
-  Truck,          // Vehicle Rent/Sell
-  Megaphone,      // Business Promotion
-  Airplay,        // Travel
-  Star,           // Astrology
-  Home,           // Property
-  FileText,       // Public Notice
-  Search,         // Lost & Found
-  Toolbox,        // Service
-  User,           // Personal
-  Briefcase,      // Employment
-  Smartphone,     // Mobiles
-  Archive,        // Electronics / Furniture / Other
+  BookOpen,
+  Users,
+  Truck,
+  Megaphone,
+  Airplay,
+  Star,
+  Home,
+  FileText,
+  Search,
+  Toolbox,
+  User,
+  Briefcase,
+  Smartphone,
+  Archive,
 } from "lucide-react";
 
 const categories = [
@@ -44,48 +44,35 @@ export default function Categories() {
   const [activeIndex, setActiveIndex] = useState(null);
   const [showAll, setShowAll] = useState(false);
 
-  // Determine how many categories to show initially (1 row)
-  const itemsPerRow = 6; // for lg screens
-  const visibleCategories = showAll ? categories : categories.slice(0, itemsPerRow);
+  const itemsPerRow = 6;
+  const visibleCategories = showAll
+    ? categories
+    : categories.slice(0, itemsPerRow);
 
   return (
-    <section className="py-12 bg-gray-50">
-      <h2 className="text-3xl md:text-4xl font-bold text-center mb-10 text-gray-800">
+    <section className="py-12 theme-section">
+      <h2 className="text-3xl md:text-4xl font-bold text-center mb-10 theme-heading">
         Explore Categories
       </h2>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 px-4 md:px-12">
         {visibleCategories.map((cat, i) => {
-          const isActive = activeIndex === i;
           const Icon = cat.icon;
+          const isActive = activeIndex === i;
 
           return (
             <div
               key={cat.name}
               onClick={() => setActiveIndex(i)}
-              className={`cursor-pointer rounded-2xl p-6 flex flex-col items-center justify-center
-                          border transition-all duration-300 ease-in-out
-                          ${
-                            isActive
-                              ? "border-blue-500 bg-blue-50 shadow-lg"
-                              : "border-gray-200 bg-white hover:border-blue-400 hover:shadow-xl hover:-translate-y-2"
-                          }`}
+              className={`cursor-pointer rounded-2xl p-6 flex flex-col items-center justify-center ${
+                isActive ? "theme-card-active" : "theme-card"
+              }`}
             >
-              <div
-                className={`w-16 h-16 flex items-center justify-center rounded-full mb-4 text-3xl shadow-lg transition-all duration-300
-                            ${
-                              isActive
-                                ? "bg-blue-100 text-blue-600"
-                                : "bg-gray-100 text-gray-700"
-                            }`}
-              >
+              <div className="w-16 h-16 flex items-center justify-center rounded-full mb-4 shadow-md theme-icon">
                 <Icon size={28} />
               </div>
-              <span
-                className={`text-center font-semibold text-sm md:text-base ${
-                  isActive ? "text-blue-600" : "text-gray-700"
-                }`}
-              >
+
+              <span className="text-center font-semibold text-sm md:text-base theme-heading">
                 {cat.name}
               </span>
             </div>
@@ -93,12 +80,11 @@ export default function Categories() {
         })}
       </div>
 
-      {/* View More / View Less Button */}
       {categories.length > itemsPerRow && (
         <div className="flex justify-center mt-8">
           <button
             onClick={() => setShowAll(!showAll)}
-            className="px-6 py-2 bg-blue-600 text-white rounded-full font-medium hover:bg-blue-700 transition"
+            className="px-6 py-2 rounded-full font-medium theme-button-primary"
           >
             {showAll ? "View Less" : "View More"}
           </button>
