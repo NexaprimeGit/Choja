@@ -25,9 +25,10 @@ export default function Trending({ setSearchQuery }) {
             Trending Searches Near You
           </h2>
 
-          <button className="theme-button-primary px-4 py-2 rounded-full text-sm">
-            View More →
-          </button>
+          <button className="theme-button-accent px-4 py-2 rounded-full text-sm transition">
+  View More →
+</button>
+
         </div>
 
         <div className="flex flex-wrap gap-5">

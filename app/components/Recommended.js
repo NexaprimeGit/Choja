@@ -36,9 +36,10 @@ export default function Recommended() {
             Recommended Deals
           </h2>
 
-          <button className="theme-button-primary px-4 py-2 rounded-full text-sm transition">
-            View More →
-          </button>
+         <button className="theme-button-accent px-4 py-2 rounded-full text-sm transition">
+  View More →
+</button>
+
         </div>
 
         {/* Grid */}
@@ -79,9 +80,10 @@ export default function Recommended() {
                 {deal.discount}
               </p>
 
-              <button className="mt-4 px-4 py-2 rounded-full w-full theme-button-primary transition">
-                View Deal
-              </button>
+              <button className="mt-4 px-4 py-2 rounded-full w-full theme-button-accent transition">
+  View Deal
+</button>
+
             </div>
           ))}
 

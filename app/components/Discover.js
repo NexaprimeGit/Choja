@@ -37,9 +37,10 @@ export default function Discover() {
             Discover What's Nearby
           </h2>
 
-          <button className="font-medium text-sm theme-button-primary px-4 py-2 rounded-full">
-            View More →
-          </button>
+          <button className="theme-button-accent px-4 py-2 rounded-full text-sm transition">
+  View More →
+</button>
+
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8">

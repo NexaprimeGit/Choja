@@ -120,9 +120,10 @@ export default function RecentListings() {
                 {item.price}
               </p>
 
-              <button className="w-full mt-4 py-3 rounded-xl font-bold theme-button-primary">
-                Chat
-              </button>
+              <button className="w-full mt-4 py-3 rounded-xl font-bold theme-button-accent">
+  Chat
+</button>
+
             </div>
           </div>
         ))}

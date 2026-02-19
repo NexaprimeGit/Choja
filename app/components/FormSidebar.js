@@ -4,9 +4,8 @@ export default function FormSidebar() {
   return (
     <div className="space-y-8 sticky top-20">
 
-      {/* Live Preview */}
-      <div className="bg-white/80 backdrop-blur-md p-6 rounded-2xl shadow-lg border border-gray-100">
-        <p className="text-xs text-green-600 font-semibold mb-4 tracking-wide">
+      <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+        <p className="text-xs text-[#157A4F] font-semibold mb-4 tracking-wide">
           LIVE PREVIEW
         </p>
 
@@ -23,11 +22,10 @@ export default function FormSidebar() {
         <h4 className="font-semibold mt-4 text-gray-800">
           Apple iPhone 15 Pro Max - Mint Condition
         </h4>
-        <p className="font-bold text-xl mt-2 text-blue-600">₹75,000</p>
+        <p className="font-bold text-xl mt-2 text-[#157A4F]">₹75,000</p>
       </div>
 
-      {/* Pricing */}
-      <div className="bg-white/80 backdrop-blur-md p-6 rounded-2xl shadow-lg border border-gray-100 space-y-6">
+      <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 space-y-6">
         <h4 className="font-semibold text-lg text-gray-800">
           Promotion & Pricing
         </h4>
@@ -46,10 +44,10 @@ export default function FormSidebar() {
 
         <div className="border-t pt-4 flex justify-between font-semibold text-gray-800">
           <span>Total</span>
-          <span className="text-blue-600">₹1,198</span>
+          <span className="text-[#157A4F]">₹1,198</span>
         </div>
 
-        <button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl hover:opacity-90 transition shadow-md">
+        <button className="w-full bg-[#157A4F] text-white py-3 rounded-xl hover:bg-[#0f5c3a] transition shadow-md">
           Review & Post Ad
         </button>
 

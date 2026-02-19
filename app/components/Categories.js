@@ -84,7 +84,8 @@ export default function Categories() {
         <div className="flex justify-center mt-8">
           <button
             onClick={() => setShowAll(!showAll)}
-            className="px-6 py-2 rounded-full font-medium theme-button-primary"
+            className="px-6 py-2 rounded-full font-medium theme-button-accent"
+
           >
             {showAll ? "View Less" : "View More"}
           </button>

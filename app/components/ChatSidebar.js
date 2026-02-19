@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 
 const chats = [
@@ -11,57 +13,44 @@ const chats = [
   },
   {
     name: "Amit Singh",
-    message: "Got it. Will check the",
+    message: "Got it. Will check the details.",
     time: "Yesterday",
     unread: 0,
     img: "/images/user2.jpg",
-  },
-  {
-    name: "Mrs. Patel",
-    message: "The tiffin service is",
-    time: "2 days ago",
-    unread: 0,
-    img: "/images/user3.jpg",
-  },
-  {
-    name: "Rahul Joshi",
-    message: "I'm interested in rent",
-    time: "3 days ago",
-    unread: 1,
-    img: "/images/user4.jpg",
-  },
-  {
-    name: "Anjali Verma",
-    message: "Let's catch up tomorrow",
-    time: "4 days ago",
-    unread: 0,
-    img: "/images/user5.jpg",
   },
 ];
 
 export default function ChatSidebar() {
   return (
-    <div className="w-1/3 border-r bg-gray-50 p-6 overflow-y-auto">
+    <div className="w-1/3 bg-white border-r border-gray-200 p-6 overflow-y-auto">
 
-      <h2 className="text-xl font-semibold mb-6">Chats</h2>
+      <h2 className="text-2xl font-bold mb-8 text-gray-800">
+        Messages
+      </h2>
 
-      <div className="space-y-3">
+      <div className="space-y-4">
         {chats.map((chat, i) => (
           <div
             key={i}
-            className={`flex items-center justify-between p-4 rounded-xl cursor-pointer transition
-            ${chat.active ? "bg-blue-100" : "hover:bg-gray-100"}`}
+            className={`flex items-center justify-between p-4 rounded-2xl cursor-pointer transition-all duration-300 border
+            ${
+              chat.active
+                ? "bg-[#FFF3D6] border-[#F5B849] shadow-sm"
+                : "border-transparent hover:bg-[#F8F6F2]"
+            }`}
           >
             <div className="flex items-center gap-4">
               <Image
                 src={chat.img}
-                width={45}
-                height={45}
+                width={48}
+                height={48}
                 alt={chat.name}
                 className="rounded-full object-cover"
               />
               <div>
-                <p className="font-medium text-gray-800">{chat.name}</p>
+                <p className="font-semibold text-gray-800">
+                  {chat.name}
+                </p>
                 <p className="text-sm text-gray-500 truncate w-40">
                   {chat.message}
                 </p>
@@ -71,7 +60,7 @@ export default function ChatSidebar() {
             <div className="text-right">
               <p className="text-xs text-gray-400">{chat.time}</p>
               {chat.unread > 0 && (
-                <div className="bg-blue-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full mt-2 ml-auto">
+                <div className="bg-[#157A4F] text-white text-xs w-6 h-6 flex items-center justify-center rounded-full mt-2 ml-auto">
                   {chat.unread}
                 </div>
               )}

@@ -27,7 +27,7 @@ export default function PostAdForm() {
   const scrollRef = useRef(null);
 
   const inputStyle =
-    "w-full border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition";
+    "w-full border border-gray-200 bg-white p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#157A4F] focus:border-[#157A4F] transition shadow-sm";
 
   const categories = [
     { name: "Education", icon: GraduationCap },
@@ -53,21 +53,16 @@ export default function PostAdForm() {
   const [selectedSub, setSelectedSub] = useState(null);
   const [selectedDates, setSelectedDates] = useState([]);
   const [currentMonth, setCurrentMonth] = useState(new Date());
-
-  // Media upload state
   const [uploadedImages, setUploadedImages] = useState([]);
 
-  // Scroll categories
   const scroll = (direction) => {
     if (!scrollRef.current) return;
-    const scrollAmount = 260;
     scrollRef.current.scrollBy({
-      left: direction === "left" ? -scrollAmount : scrollAmount,
+      left: direction === "left" ? -260 : 260,
       behavior: "smooth",
     });
   };
 
-  // Handle media upload
   const handleFileUpload = (e) => {
     const files = Array.from(e.target.files);
     const images = files.map((file) => ({
@@ -77,12 +72,10 @@ export default function PostAdForm() {
     setUploadedImages((prev) => [...prev, ...images]);
   };
 
-  // Remove uploaded image
   const removeImage = (index) => {
     setUploadedImages((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // Format date to readable string
   const formatDate = (date) =>
     new Intl.DateTimeFormat("en-GB", {
       day: "2-digit",
@@ -90,37 +83,43 @@ export default function PostAdForm() {
       year: "numeric",
     }).format(date);
 
-  // Month & Year arrays
   const months = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
+    "January","February","March","April","May","June",
+    "July","August","September","October","November","December"
   ];
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 10 }, (_, i) => currentYear + i);
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-12 bg-[#F8F6F2] p-6 rounded-3xl">
+
+      {/* SECTION WRAPPER STYLE */}
+      {/* Reusable Card Style */}
+      {/** --------------------------------------- */}
 
       {/* Choose Category */}
-      <div className="bg-white pt-8 pb-6 px-5 rounded-2xl shadow-md border border-gray-200 relative">
-        <h3 className="font-semibold text-xl mb-4 text-gray-800">Choose Category</h3>
+      <div className="bg-white p-8 rounded-3xl shadow-md border border-gray-100 relative">
+        <h3 className="font-semibold text-2xl mb-6 text-gray-800">
+          Choose Category
+        </h3>
 
         <button
           onClick={() => scroll("left")}
-          className="absolute left-0 top-1/2 -translate-y-1/2 bg-white border border-gray-200 shadow-md rounded-full p-2 hover:bg-gray-50 transition z-10"
+          className="absolute left-2 top-1/2 -translate-y-1/2 bg-white border border-gray-200 shadow-md rounded-full p-2 hover:bg-[#FFF3D6] transition z-10"
         >
-          <ChevronLeft size={16} />
+          <ChevronLeft size={18} />
         </button>
+
         <button
           onClick={() => scroll("right")}
-          className="absolute right-0 top-1/2 -translate-y-1/2 bg-white border border-gray-200 shadow-md rounded-full p-2 hover:bg-gray-50 transition z-10"
+          className="absolute right-2 top-1/2 -translate-y-1/2 bg-white border border-gray-200 shadow-md rounded-full p-2 hover:bg-[#FFF3D6] transition z-10"
         >
-          <ChevronRight size={16} />
+          <ChevronRight size={18} />
         </button>
 
         <div
           ref={scrollRef}
-          className="flex gap-5 overflow-x-auto scroll-smooth px-10 snap-x snap-mandatory"
+          className="flex gap-6 overflow-x-auto scroll-smooth px-12 snap-x snap-mandatory"
         >
           {categories.map((cat, index) => {
             const Icon = cat.icon;
@@ -133,30 +132,35 @@ export default function PostAdForm() {
                   setSelectedCategory(cat);
                   setSelectedSub(null);
                 }}
-                className={`snap-start flex-shrink-0 w-[100px] h-[120px] flex flex-col items-center justify-center rounded-xl cursor-pointer transition-all duration-300 border
-                  ${isActive
-                      ? "bg-blue-600 text-white border-blue-600 shadow-lg"
-                      : "bg-white text-gray-700 border-gray-300 hover:border-blue-500 hover:shadow-md hover:-translate-y-1"
-                  }`}
+                className={`snap-start flex-shrink-0 w-[110px] h-[130px] flex flex-col items-center justify-center rounded-2xl cursor-pointer transition-all duration-300 border
+                ${
+                  isActive
+                    ? "bg-[#157A4F] text-white border-[#157A4F] shadow-lg scale-105"
+                    : "bg-white text-gray-700 border-gray-200 hover:border-[#157A4F] hover:-translate-y-1 hover:shadow-md"
+                }`}
               >
-                <Icon size={28} className="mb-2" />
-                <span className="text-xs font-medium text-center px-2">{cat.name}</span>
+                <Icon size={30} className="mb-2" />
+                <span className="text-xs font-medium text-center px-2">
+                  {cat.name}
+                </span>
               </div>
             );
           })}
         </div>
 
+        {/* Subcategories */}
         {selectedCategory?.sub && (
-          <div className="flex gap-4 mt-6 justify-center">
+          <div className="flex gap-4 mt-8 justify-center">
             {selectedCategory.sub.map((option, i) => (
               <button
                 key={i}
                 onClick={() => setSelectedSub(option)}
                 className={`px-6 py-2 rounded-full text-sm font-medium transition
-                  ${selectedSub === option
-                      ? "bg-blue-600 text-white shadow-md"
-                      : "bg-gray-100 hover:bg-blue-50 text-gray-700"
-                  }`}
+                ${
+                  selectedSub === option
+                    ? "bg-[#157A4F] text-white shadow-md"
+                    : "bg-[#FFF3D6] text-gray-700 hover:bg-[#F5B849] hover:text-white"
+                }`}
               >
                 {option}
               </button>
@@ -166,16 +170,24 @@ export default function PostAdForm() {
       </div>
 
       {/* Basic Info */}
-      <div className="bg-white p-8 rounded-2xl shadow-md border border-gray-200 space-y-6">
-        <h3 className="font-semibold text-xl text-gray-800">Basic Information</h3>
+      <div className="bg-white p-8 rounded-3xl shadow-md border border-gray-100 space-y-6">
+        <h3 className="font-semibold text-2xl text-gray-800">
+          Basic Information
+        </h3>
         <input placeholder="Ad Title" className={inputStyle} />
-        <textarea placeholder="Description" rows={4} className={inputStyle} />
+        <textarea
+          placeholder="Description"
+          rows={4}
+          className={inputStyle}
+        />
         <input placeholder="Price (₹)" className={`${inputStyle} w-1/2`} />
       </div>
 
       {/* Dynamic Details */}
-      <div className="bg-white p-8 rounded-2xl shadow-md border border-gray-200 space-y-6">
-        <h3 className="font-semibold text-xl text-gray-800">{selectedCategory.name} Details</h3>
+      <div className="bg-white p-8 rounded-3xl shadow-md border border-gray-100 space-y-6">
+        <h3 className="font-semibold text-2xl text-gray-800">
+          {selectedCategory.name} Details
+        </h3>
         <div className="grid grid-cols-2 gap-6">
           <input placeholder="Field 1" className={inputStyle} />
           <input placeholder="Field 2" className={inputStyle} />
@@ -185,12 +197,14 @@ export default function PostAdForm() {
       </div>
 
       {/* Scheduling */}
-      <div className="bg-white p-8 rounded-2xl shadow-md border border-gray-200 space-y-6">
-        <h3 className="font-semibold text-xl text-gray-800">Ad Scheduling</h3>
+      <div className="bg-white p-8 rounded-3xl shadow-md border border-gray-100 space-y-6">
+        <h3 className="font-semibold text-2xl text-gray-800">
+          Ad Scheduling
+        </h3>
 
-        <div className="flex gap-4 mb-4 justify-center">
+        <div className="flex gap-4 justify-center">
           <select
-            className="border border-gray-300 rounded-lg px-3 py-1"
+            className="border border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-[#157A4F]"
             value={currentMonth.getMonth()}
             onChange={(e) =>
               setCurrentMonth(new Date(currentMonth.getFullYear(), Number(e.target.value), 1))
@@ -202,7 +216,7 @@ export default function PostAdForm() {
           </select>
 
           <select
-            className="border border-gray-300 rounded-lg px-3 py-1"
+            className="border border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-[#157A4F]"
             value={currentMonth.getFullYear()}
             onChange={(e) =>
               setCurrentMonth(new Date(Number(e.target.value), currentMonth.getMonth(), 1))
@@ -215,7 +229,7 @@ export default function PostAdForm() {
         </div>
 
         <div className="flex justify-center">
-          <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 shadow-sm">
+          <div className="bg-[#FFF3D6] p-6 rounded-2xl border border-gray-200 shadow-sm">
             <DayPicker
               mode="multiple"
               selected={selectedDates}
@@ -229,11 +243,11 @@ export default function PostAdForm() {
         </div>
 
         {selectedDates.length > 0 && (
-          <div className="flex flex-wrap gap-2 mt-4 justify-center">
+          <div className="flex flex-wrap gap-3 justify-center">
             {selectedDates.map((date, index) => (
               <span
                 key={index}
-                className="bg-blue-600 text-white px-4 py-2 rounded-full text-sm shadow-md"
+                className="bg-[#157A4F] text-white px-4 py-2 rounded-full text-sm shadow-md"
               >
                 {formatDate(date)}
               </span>
@@ -243,32 +257,34 @@ export default function PostAdForm() {
       </div>
 
       {/* Media Upload */}
-      <div className="bg-white p-8 rounded-2xl shadow-md border border-gray-200">
-        <h3 className="font-semibold text-xl mb-6 text-gray-800">Media & Photos</h3>
+      <div className="bg-white p-8 rounded-3xl shadow-md border border-gray-100">
+        <h3 className="font-semibold text-2xl mb-6 text-gray-800">
+          Media & Photos
+        </h3>
 
         <div className="grid grid-cols-4 gap-6">
           {uploadedImages.map((image, index) => (
             <div
               key={index}
-              className="h-28 w-full border-2 border-gray-200 rounded-2xl flex items-center justify-center relative overflow-hidden"
+              className="h-32 border border-gray-200 rounded-2xl relative overflow-hidden shadow-sm"
             >
               <img
                 src={image.url}
                 alt={`uploaded-${index}`}
-                className="h-full w-full object-cover rounded-2xl"
+                className="h-full w-full object-cover"
               />
               <button
                 type="button"
                 onClick={() => removeImage(index)}
-                className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                className="absolute top-2 right-2 bg-red-500 text-white rounded-full px-2 py-1 text-xs hover:bg-red-600"
               >
-                &times;
+                Remove
               </button>
             </div>
           ))}
 
-          <label className="h-28 flex items-center justify-center border-2 border-dashed rounded-2xl cursor-pointer text-gray-400 hover:border-blue-500 hover:text-blue-500 transition">
-            +
+          <label className="h-32 flex items-center justify-center border-2 border-dashed rounded-2xl cursor-pointer text-gray-400 hover:border-[#157A4F] hover:text-[#157A4F] transition bg-[#FFF3D6]">
+            + Add
             <input
               type="file"
               multiple
@@ -279,6 +295,7 @@ export default function PostAdForm() {
           </label>
         </div>
       </div>
+
     </div>
   );
 }

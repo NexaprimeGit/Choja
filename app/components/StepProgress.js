@@ -12,7 +12,8 @@ export default function StepProgress() {
         <div key={i} className="flex items-center gap-4 w-full">
           <div
             className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold
-            ${i === 0 ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-600"}`}
+            ${i === 0 ? "bg-[#157A4F] text-white" : "bg-gray-200 text-gray-600"}
+`}
           >
             {i + 1}
           </div>
