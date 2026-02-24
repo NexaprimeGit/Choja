@@ -292,3 +292,72 @@ body {
   color: white;
   border: none;
 }
+/* ============================= */
+/* CATEGORY SCROLLBAR CLEAN FIX */
+/* ============================= */
+
+/* Hide scrollbar completely by default */
+.category-scroll {
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Hide WebKit scrollbar */
+.category-scroll::-webkit-scrollbar {
+  height: 0px;
+}
+
+/* Show scrollbar ONLY when hovering the scroll container */
+.category-scroll:hover {
+  scrollbar-width: thin; /* Firefox */
+}
+
+.category-scroll:hover::-webkit-scrollbar {
+  height: 6px;
+}
+
+/* Transparent track (NO background change) */
+.category-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Minimal thumb */
+.category-scroll::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+}
+
+/* Slightly darker on hover — but no bar highlight */
+.category-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+/* Smooth dropdown animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.25s ease forwards;
+}
+/* ============================= */
+/* NAVBAR INPUT FIX */
+/* ============================= */
+.nav-input {
+  background: #ffffff !important;   /* FORCE PURE WHITE */
+  border: 1px solid var(--color-border);
+  transition: none !important;
+}
+
+.nav-input:hover {
+  transform: none !important;
+  box-shadow: none !important;
+  border-color: var(--color-border) !important;
+}

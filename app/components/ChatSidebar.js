@@ -22,36 +22,42 @@ const chats = [
 
 export default function ChatSidebar() {
   return (
-    <div className="w-1/3 bg-white border-r border-gray-200 p-6 overflow-y-auto">
+    <div className="flex flex-col h-full">
 
-      <h2 className="text-2xl font-bold mb-8 text-gray-800">
-        Messages
-      </h2>
+      {/* Header */}
+      <div className="p-6 border-b border-gray-200">
+        <h2 className="text-2xl font-bold text-gray-800">
+          Messages
+        </h2>
+      </div>
 
-      <div className="space-y-4">
+      {/* Chat List */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-3">
+
         {chats.map((chat, i) => (
           <div
             key={i}
-            className={`flex items-center justify-between p-4 rounded-2xl cursor-pointer transition-all duration-300 border
+            className={`flex items-center justify-between p-4 rounded-xl cursor-pointer transition-all duration-300
             ${
               chat.active
-                ? "bg-[#FFF3D6] border-[#F5B849] shadow-sm"
-                : "border-transparent hover:bg-[#F8F6F2]"
+                ? "bg-[#FFF3D6] border border-[#F5B849]"
+                : "hover:bg-gray-50"
             }`}
           >
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               <Image
                 src={chat.img}
-                width={48}
-                height={48}
+                width={45}
+                height={45}
                 alt={chat.name}
                 className="rounded-full object-cover"
               />
+
               <div>
                 <p className="font-semibold text-gray-800">
                   {chat.name}
                 </p>
-                <p className="text-sm text-gray-500 truncate w-40">
+                <p className="text-sm text-gray-500 truncate w-[160px]">
                   {chat.message}
                 </p>
               </div>
@@ -59,14 +65,16 @@ export default function ChatSidebar() {
 
             <div className="text-right">
               <p className="text-xs text-gray-400">{chat.time}</p>
+
               {chat.unread > 0 && (
-                <div className="bg-[#157A4F] text-white text-xs w-6 h-6 flex items-center justify-center rounded-full mt-2 ml-auto">
+                <div className="bg-[#157A4F] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full mt-2 ml-auto">
                   {chat.unread}
                 </div>
               )}
             </div>
           </div>
         ))}
+
       </div>
     </div>
   );

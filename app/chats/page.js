@@ -5,21 +5,27 @@ import Navbar from "../components/Navbar";
 
 export default function ChatsPage() {
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col">
- <Navbar></Navbar>
-      {/* Main Content */}
-      <div className="flex-1 max-w-7xl mx-auto w-full px-6 py-10">
-        <div className="bg-white rounded-2xl shadow-lg overflow-hidden flex h-[650px]">
+    <div className="flex flex-col min-h-screen bg-gray-100">
 
-          {/* LEFT SIDEBAR */}
+      {/* NAVBAR */}
+      <Navbar />
+
+      {/* CHAT SECTION */}
+      <div className="flex flex-1 min-h-[85vh]">
+
+        {/* SIDEBAR */}
+        <aside className="w-[360px] bg-white border-r border-gray-200 flex flex-col">
           <ChatSidebar />
+        </aside>
 
-          {/* RIGHT CHAT WINDOW */}
+        {/* CHAT WINDOW */}
+        <main className="flex-1 flex flex-col bg-[#F8F6F2]">
           <ChatWindow />
+        </main>
 
-        </div>
       </div>
 
+      {/* FOOTER */}
       <Footer />
     </div>
   );

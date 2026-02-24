@@ -5,10 +5,10 @@ import Image from "next/image";
 
 export default function ChatWindow() {
   return (
-    <div className="flex-1 flex flex-col bg-[#F8F6F2]">
+    <div className="flex flex-col h-full bg-[#F8F6F2]">
 
-      {/* Header */}
-      <div className="flex items-center justify-between p-6 bg-white border-b border-gray-200">
+      {/* HEADER (Fixed) */}
+      <div className="flex items-center justify-between px-8 py-5 bg-white border-b border-gray-200 shrink-0">
         <div className="flex items-center gap-4">
           <Image
             src="/images/user1.jpg"
@@ -23,27 +23,19 @@ export default function ChatWindow() {
         </div>
 
         <div className="flex gap-6 text-gray-500">
-          <Phone
-            className="hover:text-[#157A4F] cursor-pointer transition"
-            size={20}
-          />
-          <Users
-            className="hover:text-[#157A4F] cursor-pointer transition"
-            size={20}
-          />
+          <Phone className="hover:text-[#157A4F] cursor-pointer transition" size={20} />
+          <Users className="hover:text-[#157A4F] cursor-pointer transition" size={20} />
         </div>
       </div>
 
-      {/* Messages */}
-      <div className="flex-1 p-8 space-y-6 overflow-y-auto">
+      {/* SCROLLABLE MESSAGES AREA */}
+      <div className="flex-1 overflow-y-auto px-10 py-8 space-y-6">
 
-        {/* Incoming */}
         <div className="bg-white border border-gray-200 text-gray-800 p-4 rounded-2xl w-fit max-w-sm shadow-sm">
           Hi, is the item still available?
           <div className="text-xs text-gray-400 mt-2">09:45 AM</div>
         </div>
 
-        {/* Outgoing */}
         <div className="bg-[#157A4F] text-white p-4 rounded-2xl w-fit max-w-sm ml-auto shadow-md">
           Yes, it is!
           <div className="text-xs text-green-100 mt-2">09:47 AM</div>
@@ -58,11 +50,11 @@ export default function ChatWindow() {
           Absolutely. What time works?
           <div className="text-xs text-green-100 mt-2">10:05 AM</div>
         </div>
+
       </div>
 
-      {/* Input */}
-      <div className="p-4 bg-white border-t border-gray-200 flex items-center gap-4">
-
+      {/* INPUT (Fixed) */}
+      <div className="px-8 py-4 bg-white border-t border-gray-200 flex items-center gap-4 shrink-0">
         <Link
           size={20}
           className="text-gray-400 cursor-pointer hover:text-[#F5B849] transition"
@@ -78,6 +70,7 @@ export default function ChatWindow() {
           <Send size={18} />
         </button>
       </div>
+
     </div>
   );
 }
