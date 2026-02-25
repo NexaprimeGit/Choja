@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   GraduationCap,
   Heart,
@@ -24,10 +24,68 @@ import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 
 export default function PostAdForm() {
+  // All hooks at top level
   const scrollRef = useRef(null);
+  const [cities, setCities] = useState(["Mumbai", "Pune"]);
+  const [input, setInput] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedSub, setSelectedSub] = useState(null);
+  const [selectedDates, setSelectedDates] = useState([]);
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [uploadedImages, setUploadedImages] = useState([]);
+  const [educationMode, setEducationMode] = useState("");
+  const [educationDemo, setEducationDemo] = useState("");
+  const [matrimonialGender, setMatrimonialGender] = useState("");
+  const [matrimonialMarital, setMatrimonialMarital] = useState("");
+  const [vehicleSellTransmission, setVehicleSellTransmission] = useState("");
+  const [vehicleSellRC, setVehicleSellRC] = useState("");
+  const [vehicleRentDriver, setVehicleRentDriver] = useState("");
+  const [businessType, setBusinessType] = useState("");
+  const [validTillDate, setValidTillDate] = useState(null);
+  const [travelDate, setTravelDate] = useState(null);
+  const [calendarMonth, setCalendarMonth] = useState(new Date());
+  const [socialMedia, setSocialMedia] = useState([]);
+  const [socialInput, setSocialInput] = useState({ platform: "", url: "" });
+  const [consultationMode, setConsultationMode] = useState("");
+  const [propertyTypeRent, setPropertyTypeRent] = useState("");
+  const [monthlyRent, setMonthlyRent] = useState("");
+  const [securityDeposit, setSecurityDeposit] = useState("");
+  const [maintenanceCost, setMaintenanceCost] = useState("");
+  const [availableFromDate, setAvailableFromDate] = useState(null);
+  const [preferredTenant, setPreferredTenant] = useState("");
+  const [leaseDuration, setLeaseDuration] = useState("");
+  const [propertyTypeSell, setPropertyTypeSell] = useState("");
+  const [bhk, setBhk] = useState("");
+  const [builtUpArea, setBuiltUpArea] = useState("");
+  const [furnishing, setFurnishing] = useState("");
+  const [bathrooms, setBathrooms] = useState("");
+  const [parkingAvailable, setParkingAvailable] = useState("");
+  const [floor, setFloor] = useState("");
+  const [age, setAge] = useState("");
+  const [facingSide, setFacingSide] = useState("");
+  const [askingPrice, setAskingPrice] = useState("");
+  const [noticeType, setNoticeType] = useState("");
+  const [issuingAuthority, setIssuingAuthority] = useState("");
+  const [detailedNotice, setDetailedNotice] = useState("");
+  const [supportingDocuments, setSupportingDocuments] = useState([]);
+  const [lfStatus, setLfStatus] = useState("");
+  const [itemType, setItemType] = useState("");
+  const [itemName, setItemName] = useState("");
+  const [lfDate, setLfDate] = useState(null);
+  const [lfLocation, setLfLocation] = useState("");
+  const [lfDescription, setLfDescription] = useState("");
+  const [reward, setReward] = useState("");
+  const [serviceCategory, setServiceCategory] = useState("");
+  const [serviceExperience, setServiceExperience] = useState("");
+  const [serviceArea, setServiceArea] = useState("");
+  const [availableTime, setAvailableTime] = useState("");
+  const [charges, setCharges] = useState("");
+  const [serviceBio, setServiceBio] = useState("");
+  const [available24x7, setAvailable24x7] = useState(false);
+  const [openCalendar, setOpenCalendar] = useState(null);
+  const [calendarDateMonth, setCalendarDateMonth] = useState(new Date());
 
-  const inputStyle =
-    "w-full border border-gray-200 bg-white p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#157A4F] focus:border-[#157A4F] transition shadow-sm";
+  const inputStyle = "w-full border border-gray-200 bg-white p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#157A4F] focus:border-[#157A4F] transition shadow-sm";
 
   const categories = [
     { name: "Education", icon: GraduationCap },
@@ -49,18 +107,35 @@ export default function PostAdForm() {
     { name: "Other", icon: Package },
   ];
 
-  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
-  const [selectedSub, setSelectedSub] = useState(null);
-  const [selectedDates, setSelectedDates] = useState([]);
-  const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [uploadedImages, setUploadedImages] = useState([]);
+  const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 10 }, (_, i) => currentYear + i);
 
+  // Helper functions
   const scroll = (direction) => {
     if (!scrollRef.current) return;
     scrollRef.current.scrollBy({
       left: direction === "left" ? -260 : 260,
       behavior: "smooth",
     });
+  };
+
+  const addCity = () => {
+    if (input.trim() && !cities.includes(input.trim())) {
+      setCities([...cities, input.trim()]);
+      setInput("");
+    }
+  };
+
+  const removeCity = (cityToRemove) => {
+    setCities(cities.filter((city) => city !== cityToRemove));
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      addCity();
+    }
   };
 
   const handleFileUpload = (e) => {
@@ -83,19 +158,40 @@ export default function PostAdForm() {
       year: "numeric",
     }).format(date);
 
-  const months = [
-    "January","February","March","April","May","June",
-    "July","August","September","October","November","December"
-  ];
-  const currentYear = new Date().getFullYear();
-  const years = Array.from({ length: 10 }, (_, i) => currentYear + i);
+  const addSocialMedia = () => {
+    if (socialInput.platform && socialInput.url) {
+      setSocialMedia([...socialMedia, { ...socialInput, id: Date.now() }]);
+      setSocialInput({ platform: "", url: "" });
+    }
+  };
+
+  const removeSocialMedia = (id) => {
+    setSocialMedia(socialMedia.filter((item) => item.id !== id));
+  };
+
+  const handleDocumentUpload = (e) => {
+    const files = Array.from(e.target.files);
+    const docs = files.map((file) => ({
+      file,
+      name: file.name,
+      id: Date.now() + Math.random(),
+    }));
+    setSupportingDocuments((prev) => [...prev, ...docs]);
+  };
+
+  const removeDocument = (id) => {
+    setSupportingDocuments((prev) => prev.filter((doc) => doc.id !== id));
+  };
+
+  // Initialize selectedCategory on mount
+  useEffect(() => {
+    if (selectedCategory === null && categories.length > 0) {
+      setSelectedCategory(categories[0]);
+    }
+  }, []);
 
   return (
     <div className="space-y-12 bg-[#F8F6F2] p-6 rounded-3xl">
-
-      {/* SECTION WRAPPER STYLE */}
-      {/* Reusable Card Style */}
-      {/** --------------------------------------- */}
 
       {/* Choose Category */}
 <div className="bg-white p-10 rounded-3xl shadow-md border border-gray-100 relative min-h-[320px]">
@@ -127,7 +223,7 @@ export default function PostAdForm() {
   >
     {categories.map((cat, index) => {
       const Icon = cat.icon;
-      const isActive = selectedCategory.name === cat.name;
+      const isActive = selectedCategory?.name === cat.name;
 
       return (
         <div
@@ -174,32 +270,326 @@ export default function PostAdForm() {
 
 </div>
 
-      {/* Basic Info */}
-      <div className="bg-white p-8 rounded-3xl shadow-md border border-gray-100 space-y-6">
-        <h3 className="font-semibold text-2xl text-gray-800">
-          Basic Information
-        </h3>
-        <input placeholder="Ad Title" className={inputStyle} />
-        <textarea
-          placeholder="Description"
-          rows={4}
-          className={inputStyle}
-        />
-        <input placeholder="Price (₹)" className={`${inputStyle} w-1/2`} />
-      </div>
+{/* Basic Information */}
+<div className="bg-[#f8f8f8] p-8 rounded-2xl border border-gray-200 space-y-8">
+
+  {/* Heading */}
+  <div>
+    <h2 className="text-xl font-semibold text-gray-900">
+      Basic Information
+    </h2>
+    <p className="text-sm text-gray-500 mt-1">
+      Core details required for all listing types.
+    </p>
+  </div>
+
+  {/* Language + Primary Contact (2 Columns) */}
+  <div className="grid grid-cols-2 gap-6">
+    
+    {/* Language */}
+    <div className="space-y-2">
+      <label className="text-sm font-medium text-gray-700">
+        Language
+      </label>
+      <select className="w-full h-11 px-4 rounded-lg border border-gray-300 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-gray-300">
+        <option>English (India)</option>
+        <option>Marathi</option>
+        <option>Hindi</option>
+      </select>
+    </div>
+
+    {/* Primary Contact */}
+    <div className="space-y-2">
+      <label className="text-sm font-medium text-gray-700">
+        Primary Contact
+      </label>
+      <input
+          type="text"
+          placeholder="Enter primary contact"
+          className="w-full h-11 px-4 rounded-lg border border-gray-300 bg-gray-100 text-sm focus:outline-none"
+      />
+    </div>
+
+  </div>
+
+  {/* Ad Title */}
+  <div className="space-y-2">
+    <div className="flex justify-between items-center">
+      <label className="text-sm font-medium text-gray-700">
+        Ad Title
+      </label>
+      <span className="text-xs text-gray-500">
+        42 / 100
+      </span>
+    </div>
+
+    <input
+      type="text"
+      placeholder="Enter ad title"
+      className="w-full h-11 px-4 rounded-lg border border-gray-300 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+    />
+
+    <p className="text-xs text-gray-500">
+      Catchy titles sell faster!
+    </p>
+  </div>
+
+  {/* Description */}
+  <div className="space-y-2">
+    <div className="flex justify-between items-center">
+      <label className="text-sm font-medium text-gray-700">
+        Description
+      </label>
+      <span className="text-xs text-gray-500">
+        156 / 2000
+      </span>
+    </div>
+
+    <textarea
+      rows={5}
+      placeholder="Describe your listing"
+      className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-sm resize-none focus:outline-none focus:ring-2 focus:ring-gray-300"
+    />
+  </div>
+
+  {/* Locations */}
+<div className="space-y-3">
+  <label className="text-sm font-medium text-gray-700">
+    Locations
+  </label>
+
+  <div className="w-full min-h-[56px] px-3 py-2 rounded-lg border border-gray-300 bg-white flex flex-wrap items-center gap-2 focus-within:ring-2 focus-within:ring-gray-300">
+
+    {/* City Chips */}
+    {cities.map((city, index) => (
+      <span
+        key={index}
+        className="flex items-center gap-1 px-3 py-1 text-sm bg-gray-100 rounded-full border border-gray-200"
+      >
+        {city}
+        <button
+          type="button"
+          onClick={() => removeCity(city)}
+          className="text-gray-500 hover:text-gray-700"
+        >
+          ×
+        </button>
+      </span>
+    ))}
+
+    {/* Inline Input */}
+    <input
+      type="text"
+      value={input}
+      onChange={(e) => setInput(e.target.value)}
+      onKeyDown={handleKeyDown}
+      placeholder="Add city"
+      className="flex-1 min-w-[120px] outline-none text-sm"
+    />
+  </div>
+</div>
+
+</div>
 
       {/* Dynamic Details */}
-      <div className="bg-white p-8 rounded-3xl shadow-md border border-gray-100 space-y-6">
-        <h3 className="font-semibold text-2xl text-gray-800">
-          {selectedCategory.name} Details
-        </h3>
-        <div className="grid grid-cols-2 gap-6">
-          <input placeholder="Field 1" className={inputStyle} />
-          <input placeholder="Field 2" className={inputStyle} />
-          <input placeholder="Field 3" className={inputStyle} />
-          <input placeholder="Field 4" className={inputStyle} />
+      {selectedCategory && (
+        <div className="bg-white p-8 rounded-3xl shadow-md border border-gray-100 space-y-6">
+          <h3 className="font-semibold text-2xl text-gray-800">
+            {selectedCategory.sub && selectedSub ? `${selectedCategory.name} ${selectedSub} Details` : `${selectedCategory.name} Details`}
+          </h3>
+
+          {selectedCategory.name === "Education" && (
+            <div className="grid grid-cols-2 gap-6">
+              <div className="col-span-2">
+                <label className="text-sm font-medium text-gray-700">Course Type</label>
+                <select className={inputStyle}>
+                  <option value="">Course Type (e.g. Tuition)</option>
+                  <option value="Tuition">Tuition</option>
+                  <option value="Coaching">Coaching</option>
+                  <option value="Online Course">Online Course</option>
+                  <option value="Workshop">Workshop</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-gray-700">Class/Standard</label>
+                <input placeholder="10th Grade" className={inputStyle} />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-gray-700">Subject</label>
+                <input placeholder="Mathematics" className={inputStyle} />
+              </div>
+              <div className="col-span-2">
+                <label className="text-sm font-medium text-gray-700">Mode of Education</label>
+                <div className="flex gap-4">
+                  <button type="button" className={`px-6 py-2 rounded-full text-sm font-medium ${educationMode === "Online" ? "bg-[#157A4F] text-white shadow-md" : "bg-[#FFF3D6] text-gray-700 hover:bg-[#F5B849] hover:text-white"}`} onClick={() => setEducationMode("Online")}>Online</button>
+                  <button type="button" className={`px-6 py-2 rounded-full text-sm font-medium ${educationMode === "Offline" ? "bg-[#157A4F] text-white shadow-md" : "bg-[#FFF3D6] text-gray-700 hover:bg-[#F5B849] hover:text-white"}`} onClick={() => setEducationMode("Offline")}>Offline</button>
+                </div>
+              </div>
+              <div className="col-span-2">
+                <label className="text-sm font-medium text-gray-700">Demo Class Available?</label>
+                <div className="flex gap-4">
+                  <button type="button" className={`px-6 py-2 rounded-full text-sm font-medium ${educationDemo === "Yes" ? "bg-[#157A4F] text-white shadow-md" : "bg-[#FFF3D6] text-gray-700 hover:bg-[#F5B849] hover:text-white"}`} onClick={() => setEducationDemo("Yes")}>Yes</button>
+                  <button type="button" className={`px-6 py-2 rounded-full text-sm font-medium ${educationDemo === "No" ? "bg-[#157A4F] text-white shadow-md" : "bg-[#FFF3D6] text-gray-700 hover:bg-[#F5B849] hover:text-white"}`} onClick={() => setEducationDemo("No")}>No</button>
+                </div>
+              </div>
+              <div><label className="text-sm font-medium text-gray-700">Institute Name / Personal Brand</label><input placeholder="ABC Academy" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Duration</label><input placeholder="6 months" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Fees</label><input placeholder="₹5000" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Teaching Experience</label><input placeholder="5 years" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Qualification</label><input placeholder="MSc Mathematics" className={inputStyle} /></div>
+            </div>
+          )}
+
+          {selectedCategory.name === "Matrimonial" && (
+            <div className="grid grid-cols-2 gap-6">
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Profile For</label><select className={inputStyle}><option value="">Profile For (e.g. Self)</option><option value="Self">Self</option><option value="Relative">Relative</option></select></div>
+              <div><label className="text-sm font-medium text-gray-700">Name</label><input placeholder="Rahul Sharma" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Age</label><input placeholder="28" className={inputStyle} /></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Gender</label><select className={inputStyle} value={matrimonialGender} onChange={e => setMatrimonialGender(e.target.value)}><option value="">Gender (e.g. Male)</option><option value="Male">Male</option><option value="Female">Female</option><option value="Other">Other</option></select></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Marital Status</label><select className={inputStyle} value={matrimonialMarital} onChange={e => setMatrimonialMarital(e.target.value)}><option value="">Marital Status (e.g. Single)</option><option value="Single">Single</option><option value="Divorced">Divorced</option></select></div>
+              <div><label className="text-sm font-medium text-gray-700">Religion</label><input placeholder="Hindu" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Caste</label><input placeholder="Brahmin" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Education</label><input placeholder="MBA" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Occupation</label><input placeholder="Engineer" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Annual Income</label><input placeholder="₹10,00,000" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Height</label><input placeholder={'5\'8"'} className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Location</label><input placeholder="Pune" className={inputStyle} /></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">About Me</label><textarea placeholder="I am a fun-loving person..." className={inputStyle + " resize-none h-24"} /></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Partner Preference</label><textarea placeholder="Looking for..." className={inputStyle + " resize-none h-24"} /></div>
+            </div>
+          )}
+
+          {selectedCategory.name === "Vehicle" && selectedSub === "Sell" && (
+            <div className="grid grid-cols-2 gap-6">
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Vehicle Type</label><select className={inputStyle}><option value="">Vehicle Type (e.g. Four Wheeler)</option><option value="Four Wheeler">Four Wheeler</option><option value="Two Wheeler">Two Wheeler</option><option value="Three Wheeler">Three Wheeler</option><option value="Truck">Truck</option><option value="Other">Other</option></select></div>
+              <div><label className="text-sm font-medium text-gray-700">Brand</label><input placeholder="Maruti" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Model</label><input placeholder="Swift" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Variant</label><input placeholder="VXi" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Year</label><input placeholder="2020" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">KM Driven</label><input placeholder="15000" className={inputStyle} /></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Fuel Type</label><select className={inputStyle}><option value="">Fuel Type (e.g. Petrol)</option><option value="Petrol">Petrol</option><option value="Diesel">Diesel</option><option value="Electric">Electric</option><option value="CNG">CNG</option></select></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Transmission</label><div className="flex gap-4"><button type="button" className={`px-6 py-2 rounded-full text-sm font-medium ${vehicleSellTransmission === "Manual" ? "bg-[#157A4F] text-white shadow-md" : "bg-[#FFF3D6] text-gray-700"}`} onClick={() => setVehicleSellTransmission("Manual")}>Manual</button><button type="button" className={`px-6 py-2 rounded-full text-sm font-medium ${vehicleSellTransmission === "Automatic" ? "bg-[#157A4F] text-white shadow-md" : "bg-[#FFF3D6] text-gray-700"}`} onClick={() => setVehicleSellTransmission("Automatic")}>Automatic</button></div></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Ownership</label><select className={inputStyle}><option value="">Ownership (e.g. Single Owner)</option><option value="Single Owner">Single Owner</option><option value="Second Owner">Second Owner</option><option value="Third Owner">Third Owner</option></select></div>
+              <div><label className="text-sm font-medium text-gray-700">Insurance Valid Till</label><input placeholder="Dec 2026" className={inputStyle} /></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">RC Available</label><div className="flex gap-4"><button type="button" className={`px-6 py-2 rounded-full text-sm font-medium ${vehicleSellRC === "Yes" ? "bg-[#157A4F] text-white shadow-md" : "bg-[#FFF3D6] text-gray-700"}`} onClick={() => setVehicleSellRC("Yes")}>Yes</button><button type="button" className={`px-6 py-2 rounded-full text-sm font-medium ${vehicleSellRC === "No" ? "bg-[#157A4F] text-white shadow-md" : "bg-[#FFF3D6] text-gray-700"}`} onClick={() => setVehicleSellRC("No")}>No</button></div></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Condition</label><select className={inputStyle}><option value="">Condition (e.g. Excellent)</option><option value="Excellent">Excellent</option><option value="Very Good">Very Good</option><option value="Good">Good</option></select></div>
+              <div><label className="text-sm font-medium text-gray-700">Price</label><input placeholder="₹5,00,000" className={inputStyle} /></div>
+            </div>
+          )}
+
+          {selectedCategory.name === "Vehicle" && selectedSub === "Rent" && (
+            <div className="grid grid-cols-2 gap-6">
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Vehicle Type</label><select className={inputStyle}><option value="">Vehicle Type (e.g. Four Wheeler)</option><option value="Four Wheeler">Four Wheeler</option><option value="Two Wheeler">Two Wheeler</option><option value="Three Wheeler">Three Wheeler</option><option value="Truck">Truck</option><option value="Other">Other</option></select></div>
+              <div><label className="text-sm font-medium text-gray-700">Brand / Model</label><input placeholder="Maruti Swift" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Per Day Rent Amount</label><input placeholder="₹1000" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Security Deposit</label><input placeholder="₹5000" className={inputStyle} /></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Includes Driver</label><div className="flex gap-4"><button type="button" className={`px-6 py-2 rounded-full text-sm font-medium ${vehicleRentDriver === "Yes" ? "bg-[#157A4F] text-white shadow-md" : "bg-[#FFF3D6] text-gray-700"}`} onClick={() => setVehicleRentDriver("Yes")}>Yes</button><button type="button" className={`px-6 py-2 rounded-full text-sm font-medium ${vehicleRentDriver === "No" ? "bg-[#157A4F] text-white shadow-md" : "bg-[#FFF3D6] text-gray-700"}`} onClick={() => setVehicleRentDriver("No")}>No</button><button type="button" className={`px-6 py-2 rounded-full text-sm font-medium ${vehicleRentDriver === "Both" ? "bg-[#157A4F] text-white shadow-md" : "bg-[#FFF3D6] text-gray-700"}`} onClick={() => setVehicleRentDriver("Both")}>Both</button></div></div>
+              <div><label className="text-sm font-medium text-gray-700">Min Rental Duration</label><input placeholder="2 days" className={inputStyle} /></div>
+            </div>
+          )}
+
+          {selectedCategory.name === "Business" && selectedSub === "Promotion" && (
+            <div className="grid grid-cols-2 gap-6">
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Business Name</label><input placeholder="Your Business Name" className={inputStyle} /></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Business Type</label><select className={inputStyle}><option value="">Select Business Type</option><option value="Retail">Retail</option><option value="SaaS">SaaS</option><option value="Hospitality">Hospitality</option><option value="Other">Other</option></select></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Services Offered</label><input placeholder="e.g. Web Development, Consulting" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">GST Number</label><input placeholder="18AABCU9603R1Z0 (optional)" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Website URL</label><input placeholder="https://www.example.com (optional)" className={inputStyle} /></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Social Media Presence</label><div className="space-y-3"><div className="flex gap-2"><select value={socialInput.platform} onChange={(e) => setSocialInput({...socialInput, platform: e.target.value})} className={inputStyle}><option value="">Select Platform</option><option value="Facebook">Facebook</option><option value="Instagram">Instagram</option><option value="LinkedIn">LinkedIn</option><option value="Twitter">Twitter</option><option value="YouTube">YouTube</option></select><button type="button" onClick={addSocialMedia} className="px-4 py-2 bg-[#157A4F] text-white rounded-lg font-medium hover:bg-[#0f5c3d] transition">Add</button></div><div className="flex gap-2"><input value={socialInput.url} onChange={(e) => setSocialInput({...socialInput, url: e.target.value})} placeholder="https://facebook.com/yourpage" className={inputStyle} /></div><div className="flex flex-wrap gap-2 mt-3">{socialMedia.map((item) => (<span key={item.id} className="flex items-center gap-2 px-3 py-2 bg-[#157A4F] text-white rounded-full text-sm"><span>{item.platform}: {item.url}</span><button type="button" onClick={() => removeSocialMedia(item.id)} className="text-white hover:text-red-200">×</button></span>))}</div></div></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Campaign Name</label><input placeholder="Summer Sale 2026" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Valid Till</label><div className="relative"><input type="text" placeholder="Click to select date" readOnly className={inputStyle + " cursor-pointer"} value={validTillDate ? formatDate(validTillDate) : ""} onClick={() => setOpenCalendar(openCalendar === "validTill" ? null : "validTill")} />{openCalendar === "validTill" && (<div className="absolute top-14 left-0 bg-[#FFF3D6] p-4 rounded-2xl border border-gray-200 shadow-xl z-20"><DayPicker mode="single" selected={validTillDate} onSelect={(date) => {setValidTillDate(date); setOpenCalendar(null);}} month={calendarDateMonth} onMonthChange={setCalendarDateMonth} fromDate={new Date()} /></div>)}</div></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Campaign Description</label><textarea placeholder="Describe your campaign details..." className={inputStyle + " resize-none h-24"} /></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Shop Address</label><input placeholder="123 Business Street, City, State" className={inputStyle} /></div>
+            </div>
+          )}
+
+          {selectedCategory.name === "Travel" && (
+            <div className="grid grid-cols-2 gap-6">
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Package Type</label><select className={inputStyle}><option value="">Select Package Type</option><option value="Tour Package">Tour Package</option><option value="Bus Rental">Bus Rental</option><option value="Hotel Only">Hotel Only</option><option value="Other">Other</option></select></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Destination</label><input placeholder="e.g. Paris, Rome, Venice" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Duration</label><input placeholder="7 days" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Travel Date</label><div className="relative"><input type="text" placeholder="Click to select date" readOnly className={inputStyle + " cursor-pointer"} value={travelDate ? formatDate(travelDate) : ""} onClick={() => setOpenCalendar(openCalendar === "travelDate" ? null : "travelDate")} />{openCalendar === "travelDate" && (<div className="absolute top-14 left-0 bg-[#FFF3D6] p-4 rounded-2xl border border-gray-200 shadow-xl z-20"><DayPicker mode="single" selected={travelDate} onSelect={(date) => {setTravelDate(date); setOpenCalendar(null);}} month={calendarDateMonth} onMonthChange={setCalendarDateMonth} fromDate={new Date()} /></div>)}</div></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Inclusions</label><textarea placeholder="Flights, Hotels, Meals, Tours..." className={inputStyle + " resize-none h-20"} /></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Exclusions</label><textarea placeholder="Personal expenses, Travel insurance..." className={inputStyle + " resize-none h-20"} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Price Per Person</label><input placeholder="₹25,000" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Available Seats</label><input placeholder="20" className={inputStyle} /></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Pickup Location</label><input placeholder="Airport, Hotel, City Center" className={inputStyle} /></div>
+            </div>
+          )}
+
+          {selectedCategory.name === "Astrology" && (
+            <div className="grid grid-cols-2 gap-6">
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Service Type</label><select className={inputStyle}><option value="">Select Service Type</option><option value="Horoscope">Horoscope</option><option value="Kundali">Kundali</option><option value="Palm Reading">Palm Reading</option><option value="Vastu">Vastu</option><option value="Other">Other</option></select></div>
+              <div><label className="text-sm font-medium text-gray-700">Experience</label><input placeholder="15 years" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Consultation Fee</label><input placeholder="₹500" className={inputStyle} /></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Consultation Mode</label><div className="flex gap-4"><button type="button" className={`px-6 py-2 rounded-full text-sm font-medium ${consultationMode === "Online" ? "bg-[#157A4F] text-white shadow-md" : "bg-[#FFF3D6] text-gray-700 hover:bg-[#F5B849] hover:text-white"}`} onClick={() => setConsultationMode("Online")}>Online</button><button type="button" className={`px-6 py-2 rounded-full text-sm font-medium ${consultationMode === "Offline" ? "bg-[#157A4F] text-white shadow-md" : "bg-[#FFF3D6] text-gray-700 hover:bg-[#F5B849] hover:text-white"}`} onClick={() => setConsultationMode("Offline")}>Offline</button><button type="button" className={`px-6 py-2 rounded-full text-sm font-medium ${consultationMode === "Both" ? "bg-[#157A4F] text-white shadow-md" : "bg-[#FFF3D6] text-gray-700 hover:bg-[#F5B849] hover:text-white"}`} onClick={() => setConsultationMode("Both")}>Both</button></div></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Languages Spoken</label><input placeholder="Hindi, English, Marathi" className={inputStyle} /></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Availability Time</label><input placeholder="Monday-Friday: 10 AM - 6 PM" className={inputStyle} /></div>
+            </div>
+          )}
+
+          {selectedCategory.name === "Property" && selectedSub === "Rent" && (
+            <div className="grid grid-cols-2 gap-6">
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Property Type</label><select value={propertyTypeRent} onChange={(e) => setPropertyTypeRent(e.target.value)} className={inputStyle}><option value="">Select Property Type</option><option value="Commercial">Commercial</option><option value="Plot">Plot</option><option value="Residential">Residential</option><option value="Office">Office</option></select></div>
+              <div><label className="text-sm font-medium text-gray-700">Monthly Rent</label><input placeholder="₹25,000" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Security Deposit</label><input placeholder="₹75,000" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Maintenance Cost Per Month</label><input placeholder="₹2,000" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Available From</label><div className="relative"><input type="text" placeholder="Click to select date" readOnly className={inputStyle + " cursor-pointer"} value={availableFromDate ? formatDate(availableFromDate) : ""} onClick={() => setOpenCalendar(openCalendar === "availableFrom" ? null : "availableFrom")} />{openCalendar === "availableFrom" && (<div className="absolute top-14 left-0 bg-[#FFF3D6] p-4 rounded-2xl border border-gray-200 shadow-xl z-20"><DayPicker mode="single" selected={availableFromDate} onSelect={(date) => {setAvailableFromDate(date); setOpenCalendar(null);}} month={calendarDateMonth} onMonthChange={setCalendarDateMonth} fromDate={new Date()} /></div>)}</div></div>
+              <div><label className="text-sm font-medium text-gray-700">Preferred Tenant</label><select value={preferredTenant} onChange={(e) => setPreferredTenant(e.target.value)} className={inputStyle}><option value="">Select Tenant Type</option><option value="Family">Family</option><option value="Bachelor">Bachelor</option><option value="Company">Company</option></select></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Lease Duration</label><input placeholder="6 months or 1 year" className={inputStyle} /></div>
+            </div>
+          )}
+
+          {selectedCategory.name === "Property" && selectedSub === "Sell" && (
+            <div className="grid grid-cols-2 gap-6">
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Property Type</label><select value={propertyTypeSell} onChange={(e) => setPropertyTypeSell(e.target.value)} className={inputStyle}><option value="">Select Property Type</option><option value="Apartment">Apartment</option><option value="House">House</option><option value="Plot">Plot</option><option value="Commercial">Commercial</option></select></div>
+              <div><label className="text-sm font-medium text-gray-700">BHK</label><input placeholder="2 BHK" value={bhk} onChange={(e) => setBhk(e.target.value)} className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Built-up Area</label><input placeholder="1200 sq.ft" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Furnishing</label><select value={furnishing} onChange={(e) => setFurnishing(e.target.value)} className={inputStyle}><option value="">Select Furnishing</option><option value="Furnished">Furnished</option><option value="Semi-Furnished">Semi-Furnished</option><option value="Unfurnished">Unfurnished</option></select></div>
+              <div><label className="text-sm font-medium text-gray-700">Bathrooms</label><input placeholder="2" className={inputStyle} /></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Parking Available</label><div className="flex gap-4"><button type="button" className={`px-6 py-2 rounded-full text-sm font-medium ${parkingAvailable === "Yes" ? "bg-[#157A4F] text-white shadow-md" : "bg-[#FFF3D6] text-gray-700"}`} onClick={() => setParkingAvailable("Yes")}>Yes</button><button type="button" className={`px-6 py-2 rounded-full text-sm font-medium ${parkingAvailable === "No" ? "bg-[#157A4F] text-white shadow-md" : "bg-[#FFF3D6] text-gray-700"}`} onClick={() => setParkingAvailable("No")}>No</button></div></div>
+              <div><label className="text-sm font-medium text-gray-700">Floor</label><input placeholder="3rd Floor" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Property Age</label><input placeholder="5 years" className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Facing Side</label><input placeholder="North, East, South, West" className={inputStyle} /></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Asking Price</label><input placeholder="₹40,00,000" className={inputStyle} /></div>
+            </div>
+          )}
+
+          {selectedCategory.name === "Public Notice" && (
+            <div className="grid grid-cols-2 gap-6">
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Notice Type</label><select value={noticeType} onChange={(e) => setNoticeType(e.target.value)} className={inputStyle}><option value="">Select Notice Type</option><option value="Tender">Tender</option><option value="Government">Government</option><option value="Legal">Legal</option><option value="Announcement">Announcement</option></select></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Issuing Authority</label><input placeholder="Department Name/Organization Name" value={issuingAuthority} onChange={(e) => setIssuingAuthority(e.target.value)} className={inputStyle} /></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Detailed Notice</label><textarea placeholder="Enter complete notice details..." value={detailedNotice} onChange={(e) => setDetailedNotice(e.target.value)} className={inputStyle + " resize-none h-32"} /></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Supporting Documents</label><div className="space-y-3"><label className="flex items-center justify-center h-20 px-4 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-[#157A4F] hover:bg-[#FFF3D6] transition"><input type="file" multiple className="hidden" onChange={handleDocumentUpload} /><span className="text-gray-600 font-medium">Click to upload documents</span></label><div className="flex flex-wrap gap-2">{supportingDocuments.map((doc) => (<span key={doc.id} className="flex items-center gap-2 px-3 py-2 bg-[#157A4F] text-white rounded-full text-sm"><span>📄 {doc.name}</span><button type="button" onClick={() => removeDocument(doc.id)} className="text-white hover:text-red-200">×</button></span>))}</div></div></div>
+            </div>
+          )}
+
+          {selectedCategory.name === "Lost & Found" && (
+            <div className="grid grid-cols-2 gap-6">
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Status</label><div className="flex gap-4"><button type="button" className={`px-6 py-2 rounded-full text-sm font-medium ${lfStatus === "Lost" ? "bg-[#157A4F] text-white shadow-md" : "bg-[#FFF3D6] text-gray-700"}`} onClick={() => setLfStatus("Lost")}>Lost</button><button type="button" className={`px-6 py-2 rounded-full text-sm font-medium ${lfStatus === "Found" ? "bg-[#157A4F] text-white shadow-md" : "bg-[#FFF3D6] text-gray-700"}`} onClick={() => setLfStatus("Found")}>Found</button></div></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Item Type</label><input placeholder="e.g. Phone, Wallet, Keys, Jewelry" value={itemType} onChange={(e) => setItemType(e.target.value)} className={inputStyle} /></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Item Name</label><input placeholder="iPhone 15 Pro Max, Brown Leather Wallet" value={itemName} onChange={(e) => setItemName(e.target.value)} className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Date</label><div className="relative"><input type="text" placeholder="Click to select date" readOnly className={inputStyle + " cursor-pointer"} value={lfDate ? formatDate(lfDate) : ""} onClick={() => setOpenCalendar(openCalendar === "lfDate" ? null : "lfDate")} />{openCalendar === "lfDate" && (<div className="absolute top-14 left-0 bg-[#FFF3D6] p-4 rounded-2xl border border-gray-200 shadow-xl z-20"><DayPicker mode="single" selected={lfDate} onSelect={(date) => {setLfDate(date); setOpenCalendar(null);}} month={calendarDateMonth} onMonthChange={setCalendarDateMonth} fromDate={new Date()} /></div>)}</div></div>
+              <div><label className="text-sm font-medium text-gray-700">Location</label><input placeholder="Bandra, Mumbai" value={lfLocation} onChange={(e) => setLfLocation(e.target.value)} className={inputStyle} /></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Description</label><textarea placeholder="Describe the item, markings, condition..." value={lfDescription} onChange={(e) => setLfDescription(e.target.value)} className={inputStyle + " resize-none h-24"} /></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Reward Amount (Optional)</label><input placeholder="₹5,000 or No Reward" value={reward} onChange={(e) => setReward(e.target.value)} className={inputStyle} /></div>
+            </div>
+          )}
+
+          {selectedCategory.name === "Service" && (
+            <div className="grid grid-cols-2 gap-6">
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Service Category</label><select value={serviceCategory} onChange={(e) => setServiceCategory(e.target.value)} className={inputStyle}><option value="">Select Service Category</option><option value="Plumbing">Plumbing</option><option value="Electrical">Electrical</option><option value="Carpentry">Carpentry</option><option value="Cleaning">Cleaning</option><option value="Beauty">Beauty</option><option value="IT Support">IT Support</option><option value="Tutoring">Tutoring</option></select></div>
+              <div><label className="text-sm font-medium text-gray-700">Years of Experience</label><input placeholder="8 years" value={serviceExperience} onChange={(e) => setServiceExperience(e.target.value)} className={inputStyle} /></div>
+              <div><label className="text-sm font-medium text-gray-700">Service Charges</label><input placeholder="₹500 per hour" value={charges} onChange={(e) => setCharges(e.target.value)} className={inputStyle} /></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Service Area</label><input placeholder="Mumbai Central, Bandra, Andheri" value={serviceArea} onChange={(e) => setServiceArea(e.target.value)} className={inputStyle} /></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Available Time</label><input placeholder="9 AM - 6 PM, Monday to Saturday" value={availableTime} onChange={(e) => setAvailableTime(e.target.value)} className={inputStyle} /></div>
+              <div className="col-span-2"><label className="text-sm font-medium text-gray-700">Service Bio & Skills</label><textarea placeholder="Describe your expertise, certifications, special skills..." value={serviceBio} onChange={(e) => setServiceBio(e.target.value)} className={inputStyle + " resize-none h-24"} /></div>
+              <div className="col-span-2"><label className="flex items-center gap-3 cursor-pointer"><input type="checkbox" checked={available24x7} onChange={(e) => setAvailable24x7(e.target.checked)} className="w-4 h-4 border border-gray-300 rounded accent-[#157A4F]" /><span className="text-sm font-medium text-gray-700">Available 24/7</span></label></div>
+            </div>
+          )}
         </div>
-      </div>
+      )}
 
      {/* Scheduling */}
 <div className="bg-white p-8 rounded-3xl shadow-md border border-gray-100">
